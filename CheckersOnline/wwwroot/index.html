@@ -34,24 +34,37 @@
     <div id="modal-overlay" class="modal-overlay hidden">
         <div class="modal-card">
             <h2>Игра окончена</h2>
-
-            <div class="score-container">
-                <div class="score-item">
-                    <span class="score-label">Вы</span>
-                    <span id="player-score" class="score-value">0</span>
+            
+            
+            <div id="modal-content-default">
+                <div class="score-container">
+                    <div class="score-item">
+                        <span class="score-label">Вы</span>
+                        <span id="player-score" class="score-value">0</span>
+                    </div>
+                    <div class="score-divider">:</div>
+                    <div class="score-item">
+                        <span class="score-label">Оппонент</span>
+                        <span id="opponent-score" class="score-value">0</span>
+                    </div>
                 </div>
-                <div class="score-divider">:</div>
-                <div class="score-item">
-                    <span class="score-label">Оппонент</span>
-                    <span id="opponent-score" class="score-value">0</span>
+    
+                <div class="modal-actions">
+                    <button id="btn-rematch" class="btn-primary btn-rematch">Реванш</button>
+                    <button id="btn-new-game" class="btn-primary">Новая игра</button>
                 </div>
             </div>
-
-            <div class="modal-actions">
-                <button id="btn-rematch" class="btn-primary btn-rematch">Реванш</button>
-                <button id="btn-new-game" class="btn-primary">Новая игра</button>
+            <div id="modal-content-disconnect" class="hidden">
+                <div class="disconnect-info">
+                    <p>Соединение с противником потеряно.</p>
+                    <p class="highlight">Вам зачислена техническая победа!</p>
+                </div>
+                <div class="modal-actions">
+                    <button id="btn-main-menu" class="btn-primary">Главное меню</button>
+                </div>
             </div>
         </div>
+        
     </div>
 </div>
 

@@ -7,6 +7,7 @@
     const concedeBtn = document.getElementById("btn-concede");
     const rematchBtn = document.getElementById("btn-rematch");
     const newGameBtn = document.getElementById("btn-new-game");
+    const mainMenuBtn = document.getElementById("btn-main-menu");
     
     const statusText = document.getElementById("status");
     const board = document.getElementById("game-board");
@@ -34,6 +35,10 @@
     
     rematchBtn.addEventListener("click", () => {
         connection.invoke("Rematch", groupId).catch(err => console.error(err));
+    })
+    
+    mainMenuBtn.addEventListener("click", () => {
+        resetLobby();
     })
     
     // Сервер сообщает, что мы в очереди
@@ -69,7 +74,7 @@
     })
     
     connection.on("YouConceded", (score) =>{
-        console.log("You conceded.... skill issue?");
+        console.log("You conceded... skill issue?");
 
         const parts = score.split("|");
         showGameModal(parts[0], parts[1]);
@@ -86,6 +91,17 @@
     
     connection.on("OpponentDisconnected", (score) => {
         console.log("Opponent disconnected... skill issue? " + score);
+        
+        const modal = document.getElementById('modal-overlay');
+        modal.classList.remove("hidden");
+        
+        document.getElementById("modal-content-default").classList.add("hidden");
+        document.getElementById("btn-rematch").classList.add("hidden");
+        
+        const disconnectBlock = document.getElementById("modal-content-disconnect");
+        disconnectBlock.classList.remove("hidden");
+        
+        modal.querySelector("h2").innerText = "Оппонент отключился";
     })
     
     
@@ -153,6 +169,20 @@
             rematchBtn.style.opacity = "1";
             rematchBtn.style.cursor = "pointer";
         }
+    }
+    
+    function resetLobby() {
+        document.getElementById("modal-overlay").classList.add("hidden");
+        document.getElementById("game-area").classList.add("hidden");
+        
+        document.getElementById("lobby").classList.remove("hidden");
+        document.getElementById("loader").classList.add("hidden");
+        findGameBtn.classList.remove("hidden");
+
+        document.getElementById("modal-content-default").classList.remove("hidden");
+        document.getElementById("modal-content-disconnect").classList.add("hidden");
+        document.getElementById("btn-rematch").classList.remove("hidden");
+        document.querySelector('.modal-card h2').innerText = "Игра окончена";
     }
 })
 

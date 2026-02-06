@@ -5,41 +5,36 @@ namespace CheckersOnline;
 
 public class QuickGameQueue
 {
-    private readonly ConcurrentQueue<string> _waitingPlayers = new ConcurrentQueue<string>();
+    private readonly ConcurrentDictionary<string, byte> _waitingPlayers = new ();
 
     public List<string>? EnqueuePlayer(string connectionId)
     {
-        if(!_waitingPlayers.Contains(connectionId)) _waitingPlayers.Enqueue(connectionId);
+        if (!_waitingPlayers.TryAdd(connectionId, 0)) return null; 
         Console.WriteLine($"{connectionId} joined the game queue. {_waitingPlayers.Count}");
         
         if (_waitingPlayers.Count >= 2)
         {
             List<string> opponents = new List<string>();
-            if (_waitingPlayers.TryDequeue(out string user1) && _waitingPlayers.TryDequeue(out string user2))
+            int i = 0;
+            string key;
+            foreach (var player in _waitingPlayers)
             {
-                opponents.Add(user1);
-                opponents.Add(user2);
-                Console.WriteLine($"{user1} {user2} left the queue");
+                key = player.Key;
+                if(!_waitingPlayers.TryRemove(player.Key, out _)) continue;
+                opponents.Add(key);
+                i++;
+                if (i == 2) break;
             }
 
-            if (opponents.Count < 2) return null;
-            return opponents;
+            if (opponents.Count == 2) return opponents;
+            foreach (var player in opponents)
+            {
+                _waitingPlayers.TryAdd(player, 0);
+            }
         }
-
         return null;
-        
     }
     
-    public int GetQueueCount() => _waitingPlayers.Count;
-    
-    public List<string> GetNextPlayers()
-    {
-        List<string> players = new List<string>();
-        if(GetQueueCount() < 2) return players;
-        for (int i = 0; i < 2; i++)
-        {
-            if(_waitingPlayers.TryDequeue(out string connectionId)) players.Add(connectionId);
-        }
-        return players;
-    }
+    public int Count() => _waitingPlayers.Count;
+    public bool TryRemove(string playerId) => _waitingPlayers.TryRemove(playerId, out _);
 }

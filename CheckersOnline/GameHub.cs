@@ -59,6 +59,8 @@ public class GameHub(QuickGameQueue quickGameQueue, GameDictionary gameDictionar
     {
         string player = Context.ConnectionId;
         string? groupId = gameDictionary.FindKeyByPlayerId(player);
+        
+        if(quickGameQueue.TryRemove(player)) await base.OnDisconnectedAsync(exception);
         if (groupId != null)
         {
             string player2 = (gameDictionary[groupId].userId1 == player) ? gameDictionary[groupId].userId2 : gameDictionary[groupId].userId1;
@@ -70,9 +72,6 @@ public class GameHub(QuickGameQueue quickGameQueue, GameDictionary gameDictionar
             
             await Clients.Client(player2).SendAsync("OpponentDisconnected", score);
         }
-        else
-        {
-            await base.OnDisconnectedAsync(exception);
-        }
+        await base.OnDisconnectedAsync(exception);
     }
 }

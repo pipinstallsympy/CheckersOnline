@@ -294,4 +294,11 @@ body {
     color: white;
 }
 
+.disconnect-text {
+    margin: 20px 0;
+    color: #e74c3c;
+    font-weight: bold;
+    text-align: center;
+}
+
 .hidden { display: none !important; }
