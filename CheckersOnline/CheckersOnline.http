@@ -1,0 +1,7 @@
+@CheckersOnline_HostAddress = http://localhost:5272
+
+GET {{CheckersOnline_HostAddress}}/weatherforecast/
+Accept: application/json
+
+POST {{CheckersOnline_HostAddress}}/make-move?move=e2-e4
+###

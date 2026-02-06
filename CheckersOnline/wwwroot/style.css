@@ -1,0 +1,297 @@
+﻿:root {
+    --bg-color: #1a1a2e;
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --primary-color: #4ecca3;
+    --white-cell: #ebecd0;
+    --black-cell: #779556;
+    --text-color: #ffffff;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Контейнеры */
+.main-container {
+    text-align: center;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.card {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+}
+
+/* Кнопки */
+.btn-primary {
+    background: var(--primary-color);
+    color: #1a1a2e;
+    border: none;
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(78, 204, 163, 0.4);
+}
+
+.btn-primary:disabled {
+    background: #555;
+    border-color: #444;
+    cursor: not-allowed;
+    color: #888 !important;
+    transform: none !important; /* Убираем эффект всплытия при наведении */
+    box-shadow: none !important;
+}
+
+/* Доска */
+#game-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Выравнивает всё (заголовок, доску, кнопку) по центру */
+    width: 100%;
+}
+
+/* 3. Сама доска (проверь, чтобы было так) */
+#game-board {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    width: 90vw;
+    max-width: 700px;
+    aspect-ratio: 1 / 1;
+    margin: 20px auto; /* auto центрирует блок горизонтально */
+    border: 8px solid #333;
+    border-radius: 4px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+}
+
+.white { background-color: var(--white-cell); }
+.black { background-color: var(--black-cell); }
+
+/* Анимация загрузки */
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255,255,255,0.1);
+    border-left-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.vs {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+/* Контейнер для центрирования шашки внутри клетки */
+.cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* Общий стиль шашки */
+.piece {
+    width: 80%;
+    height: 80%;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5), 0 4px 5px rgba(0,0,0,0.3);
+    transition: transform 0.2s;
+}
+
+.piece:hover {
+    transform: scale(1.05);
+}
+
+/* Белая шашка */
+.white-piece {
+    background: radial-gradient(circle at 30% 30%, #ffffff, #dcdcdc);
+    border: 1px solid #999;
+}
+
+/* Черная шашка */
+.black-piece {
+    background: radial-gradient(circle at 30% 30%, #444, #111);
+    border: 1px solid #000;
+}
+
+/* Дамка (добавляем корону или символ) */
+.king::after {
+    content: '👑';
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: gold;
+    text-shadow: 0 0 3px black;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    transition: opacity 0.3s ease;
+}
+
+.modal-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--bg-color); /* Темный фон как у всей игры */
+    padding: 2.5rem;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Тонкая рамка */
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+    text-align: center;
+    width: 90%;
+    max-width: 450px;
+    color: var(--text-color); /* Теперь текст заголовка будет БЕЛЫМ */
+}
+
+.modal-card h2 {
+    color: var(--primary-color);
+    margin-top: 0;
+    font-size: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Стили счета */
+.score-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    align-items: center;
+    margin: 30px 0;
+    width: 100%;
+}
+
+.score-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 80px;
+}
+
+.score-value {
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1;
+    margin: 5px 0;
+    color: var(--primary-color); /* Сделаем счет поярче */
+}
+
+.score-label {
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    opacity: 0.8;
+}
+
+.score-divider {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.2);
+    padding-bottom: 10px; /* Немного приподнимем визуально */
+}
+
+/* Кнопки */
+.modal-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;/* Кнопки друг под другом для солидности */
+    gap: 15px;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.modal-actions .btn-primary {
+    /* Фиксированная ширина, которой хватит для длинного текста */
+    width: 100%;
+    max-width: 300px; /* Ограничиваем, чтобы не были на всё окно */
+
+    /* Добавляем box-sizing, чтобы паддинги не раздували кнопку */
+    box-sizing: border-box;
+
+    /* Гарантируем, что текст внутри не будет переноситься */
+    white-space: nowrap;
+
+    /* Чтобы кнопка не схлопывалась, если текста нет */
+    min-height: 55px;
+}
+.btn-rematch {
+    background: transparent !important;
+    border: 2px solid var(--primary-color) !important;
+    color: var(--primary-color) !important;
+}
+
+.btn-rematch:hover {
+    background: var(--primary-color) !important;
+    color: var(--bg-color) !important;
+}
+
+#btn-concede {
+    margin-top: 30px;
+    background: transparent;
+    color: #ff4d4d;
+    border: 1px solid #ff4d4d;
+    padding: 10px 25px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#btn-concede:hover {
+    background: #ff4d4d;
+    color: white;
+}
+
+.hidden { display: none !important; }

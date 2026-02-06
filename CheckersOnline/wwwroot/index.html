@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grand Checkers Online</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="main-container">
+    <div id="lobby" class="card">
+        <h1>Шашки Онлайн</h1>
+        <p>Готовы к сражению?</p>
+        <button id="btn-find-game" class="btn-primary">Найти игру</button>
+        <div id="loader" class="hidden">
+            <div class="spinner"></div>
+            <p id="status">Ищем достойного соперника...</p>
+        </div>
+    </div>
+
+    <div id="game-area" class="hidden">
+        <div class="game-header">
+            <div class="player-info">Вы (Белые)</div>
+            <div class="vs"> VS </div>
+            <div class="player-info">Оппонент (Черные)</div>
+        </div>
+
+        <div id="game-board"></div>
+
+        <button id="btn-concede">Сдаться</button>
+    </div>
+
+    <div id="modal-overlay" class="modal-overlay hidden">
+        <div class="modal-card">
+            <h2>Игра окончена</h2>
+
+            <div class="score-container">
+                <div class="score-item">
+                    <span class="score-label">Вы</span>
+                    <span id="player-score" class="score-value">0</span>
+                </div>
+                <div class="score-divider">:</div>
+                <div class="score-item">
+                    <span class="score-label">Оппонент</span>
+                    <span id="opponent-score" class="score-value">0</span>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button id="btn-rematch" class="btn-primary btn-rematch">Реванш</button>
+                <button id="btn-new-game" class="btn-primary">Новая игра</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

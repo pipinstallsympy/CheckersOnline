@@ -1,0 +1,21 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckersOnline", "CheckersOnline\CheckersOnline.csproj", "{A7A78A90-B4BB-40D6-B39E-BD0B9D64A84E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4CC8CFE5-6EF0-41A6-8553-E2745533647A}"
+	ProjectSection(SolutionItems) = preProject
+		compose.yaml = compose.yaml
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A7A78A90-B4BB-40D6-B39E-BD0B9D64A84E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7A78A90-B4BB-40D6-B39E-BD0B9D64A84E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7A78A90-B4BB-40D6-B39E-BD0B9D64A84E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7A78A90-B4BB-40D6-B39E-BD0B9D64A84E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
