@@ -54,6 +54,19 @@ public class GameHub(QuickGameQueue quickGameQueue, GameDictionary gameDictionar
         if (data) await Clients.Group(groupId).SendAsync("GameStarted", groupId);
         else await Clients.Client(player).SendAsync("WaitingForOpponent", groupId);
     }
+    
+    public async Task NoRematch(string groupId)
+    {
+        try
+        {
+            await Clients.OthersInGroup(groupId).SendAsync("OpponentDisconnected");
+            await DeleteGroup(groupId);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.StackTrace);
+        }
+    }
 
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
@@ -73,5 +86,16 @@ public class GameHub(QuickGameQueue quickGameQueue, GameDictionary gameDictionar
             await Clients.Client(player2).SendAsync("OpponentDisconnected", score);
         }
         await base.OnDisconnectedAsync(exception);
+    }
+
+    private async Task DeleteGroup(string groupId)
+    {
+        string player1 = gameDictionary[groupId].userId1;
+        string player2 = gameDictionary[groupId].userId2;
+        
+        await Groups.RemoveFromGroupAsync(groupId, player1);
+        await Groups.RemoveFromGroupAsync(groupId, player2);
+
+        Console.WriteLine("DELETED GROUP");
     }
 }

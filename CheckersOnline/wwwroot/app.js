@@ -6,8 +6,8 @@
     const findGameBtn = document.getElementById("btn-find-game");
     const concedeBtn = document.getElementById("btn-concede");
     const rematchBtn = document.getElementById("btn-rematch");
-    const newGameBtn = document.getElementById("btn-new-game");
-    const mainMenuBtn = document.getElementById("btn-main-menu");
+    const mainMenu1Btn = document.getElementById("btn-main-menu-1");
+    const mainMenu2Btn = document.getElementById("btn-main-menu-2");
     
     const statusText = document.getElementById("status");
     const board = document.getElementById("game-board");
@@ -36,8 +36,14 @@
     rematchBtn.addEventListener("click", () => {
         connection.invoke("Rematch", groupId).catch(err => console.error(err));
     })
+
+    mainMenu1Btn.addEventListener("click", () => {
+        connection.invoke("NoRematch", groupId).catch(err => console.error(err));
+        console.log("No rematch was sent");
+        resetLobby();
+    })
     
-    mainMenuBtn.addEventListener("click", () => {
+    mainMenu2Btn.addEventListener("click", () => {
         resetLobby();
     })
     
@@ -89,8 +95,9 @@
         }
     })
     
-    connection.on("OpponentDisconnected", (score) => {
-        console.log("Opponent disconnected... skill issue? " + score);
+    
+    connection.on("OpponentDisconnected", () => {
+        console.log("Opponent disconnected... skill issue? ");
         
         const modal = document.getElementById('modal-overlay');
         modal.classList.remove("hidden");
