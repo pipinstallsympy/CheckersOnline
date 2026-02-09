@@ -15,7 +15,7 @@
     let groupId;
     let playerColor;
     
-    connection.serverTimeoutInMilliseconds = 10000;
+    connection.serverTimeoutInMilliseconds = 30000;
     connection.start().catch(err => console.error(err));
     
     window.addEventListener("beforeunload", () => {
@@ -58,8 +58,30 @@
     });
     
     // Сервер сообщает, что игра найдена
-    connection.on("GameStarted", (gId) => {
+    connection.on("GameStarted", (gId, color) => {
         groupId = gId;
+        playerColor = (color == "white") ? 0 : 1;
+        
+        const boardElement = document.getElementById("game-board");
+        const yourLabel = document.getElementById("your-color-label");
+        const opponentLabel = document.getElementById("opponent-color-label");
+        
+        if(playerColor == 0){
+            yourLabel.innerText = "Белые";
+            yourLabel.className = "color-indicator text-white";
+            
+            opponentLabel.innerText = "Черные";
+            opponentLabel.className = "color-indicator text-black";
+            boardElement.classList.add("flipped");
+        } else {
+            yourLabel.innerText = "Черные";
+            yourLabel.className = "color-indicator text-black";
+
+            opponentLabel.innerText = "Белые";
+            opponentLabel.className = "color-indicator text-white";
+            boardElement.classList.remove("flipped");
+        }
+        
         document.getElementById("lobby").classList.add("hidden");
         document.getElementById("game-area").classList.remove("hidden");
         
@@ -150,6 +172,9 @@
                 pieceDiv.classList.add('piece');
                 pieceDiv.classList.add(`${(color == 0 ? "white": "black")}-piece`);
     
+                if(playerColor == color){
+                    pieceDiv.classList.add("my-piece");
+                }
                 if (isKing) {
                     pieceDiv.classList.add('king');
                 }

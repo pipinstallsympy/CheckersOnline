@@ -98,4 +98,10 @@ public class GameDictionary
         return true;
     }
 
+    public void ShuffleColors(string groupId)
+    {
+        Random rand = new Random();
+        GameMaster game = games[groupId];
+        if (rand.Next(0, 2) == 0) (game.user1Color, game.user2Color) = (game.user2Color, game.user1Color);
+    }
 }

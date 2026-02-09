@@ -16,15 +16,24 @@ public class GameMaster
 
     public GameMaster(string groupId, string userId1, string userId2)
     {
+        Random rand = new Random();
         this.groupId = groupId;
         this.userId1 = userId1;
         this.userId2 = userId2;
         board = new CheckersBoard();
-        user1Color = Color.White;
-        user2Color = Color.Black;
         turnCount = 0;
         victories = [0, 0];
         rematchScores = [false ,false];
+        if (rand.Next(0, 2) == 0)
+        {
+            user1Color = Color.White;
+            user2Color = Color.Black;
+        }
+        else
+        {
+            user1Color = Color.Black;
+            user2Color = Color.White;
+        }
     }
 
     public void MakeMove(string from, string to)

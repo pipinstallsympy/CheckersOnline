@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using System.Drawing;
+using Microsoft.AspNetCore.SignalR;
 
 namespace CheckersOnline;
 
@@ -21,8 +22,8 @@ public class GameHub(QuickGameQueue quickGameQueue, GameDictionary gameDictionar
             }
             gameDictionary.CreateGame(groupId, queueAnswer[0], queueAnswer[1]);
             
-            await Clients.Client(queueAnswer[0]).SendAsync("GameStarted", groupId);
-            await Clients.Client(queueAnswer[1]).SendAsync("GameStarted", groupId);
+            await Clients.Client(queueAnswer[0]).SendAsync("GameStarted", groupId, "white");
+            await Clients.Client(queueAnswer[1]).SendAsync("GameStarted", groupId, "black");
             await Groups.AddToGroupAsync(queueAnswer[0], groupId);
             await Groups.AddToGroupAsync(queueAnswer[1], groupId);
             
@@ -50,8 +51,15 @@ public class GameHub(QuickGameQueue quickGameQueue, GameDictionary gameDictionar
     {
         string player = Context.ConnectionId;
         bool data = gameDictionary.Rematch(groupId, player);
-        
-        if (data) await Clients.Group(groupId).SendAsync("GameStarted", groupId);
+
+        if (data)
+        {
+            gameDictionary.ShuffleColors(groupId);
+            GameMaster game = gameDictionary[groupId];
+
+            await Clients.Client(game.userId1).SendAsync("GameStarted", groupId, (game.user1Color == Color.White ? "white" : "black"));
+            await Clients.Client(game.userId2).SendAsync("GameStarted", groupId, (game.user2Color == Color.White ? "white" : "black"));
+        }
         else await Clients.Client(player).SendAsync("WaitingForOpponent", groupId);
     }
     

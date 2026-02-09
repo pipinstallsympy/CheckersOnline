@@ -21,9 +21,21 @@
 
     <div id="game-area" class="hidden">
         <div class="game-header">
-            <div class="player-info">Вы (Белые)</div>
-            <div class="vs"> VS </div>
-            <div class="player-info">Оппонент (Черные)</div>
+            <div class="player-card" id="player-you">
+                <span class="player-status">ВЫ</span>
+                <div class="player-info-box">
+                    <span id="your-color-label" class="color-indicator">...</span>
+                </div>
+            </div>
+
+            <div class="vs-badge">VS</div>
+
+            <div class="player-card" id="player-opponent">
+                <span class="player-status">ОППОНЕНТ</span>
+                <div class="player-info-box">
+                    <span id="opponent-color-label" class="color-indicator">...</span>
+                </div>
+            </div>
         </div>
 
         <div id="game-board"></div>
